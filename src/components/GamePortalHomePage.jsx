@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import MenuBar from "./MenuBar";
 
-
 const AppContainer = styled.div`
   text-align: center;
   padding: 40px;
   font-family: Arial, sans-serif;
   // max-width: 1200px;
-  background-color: #f2f2f2;
+  // background-color: #f2f2f2;
+  background-color: #c5f6c5;
   margin: 0 auto;
 `;
 
@@ -33,13 +33,16 @@ const GameSection = styled.section`
   scroll-snap-type: x;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const GameCardsContainer = styled.div`
   display: flex;
-  width: fit-content;
+  width: 2000px;
   transform: translateX(0);
-  // transition: transform 0.5s ease;
+  transition: transform 0.5s ease;
   scroll-snap-align: center mandatory;
 `;
 
@@ -47,29 +50,25 @@ const GameCard = styled.div`
   flex: 0 0 33%;
   width: 300px;
   height: 450px;
-  background-color: #fff;
-  border-radius: ${(props) => (props.focus ? "20px" : "20px")};
+  background-color: #f2f2f2;
+  border-radius: 20px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease;
+  transition: all 0.4s ease-in;
   transform: ${(props) => (props.focus ? "scale(1)" : "scale(0.9)")};
-  opacity: ${(props) => (props.focus ? 1 : 0.5)};
-  margin: 0 15px;
-  scroll-snap-align: center mandatory;
+  // opacity: ${(props) => (props.onFocus ? 1 : 0.5)};
+  margin: 15px 15px;
+  // scroll-snap-align: center;
 `;
 
 const GameImage = styled.div`
   height: 300px;
-  background-color: ${(props) => props.color || "#ddd"};
   background-image: ${(props) =>
-    props.image
-      ? `url(${`${process.env.PUBLIC_URL} + props.image`})`
-      : "none"};
+    props.image ? `url(${props.image})` : "none"};
+  background-color: ${(props) =>
+    props.image ? "transparent" : props.color || "#ddd"};
   background-size: cover;
   background-position: center;
-  border-top-left-radius: ${(props) => (props.focus ? "20px" : "20px")};
-  border-top-right-radius: ${(props) => (props.focus ? "20px" : "20px")};
-  border-bottom-left-radius: ${(props) => (props.focus ? "20px" : "20px")};
-  border-bottom-right-radius: ${(props) => (props.focus ? "20px" : "20px")};
+  border-radius: 20px 20px 0 0;
 `;
 
 const GameInfo = styled.div`
@@ -133,7 +132,7 @@ const games = [
     description: "Classic board game",
     link: "/snake-and-ladder",
     color: "#FFD700",
-    // image: "/image.png"
+    image: `/images/snakeladder.png`,
   },
   {
     id: 2,
@@ -141,6 +140,7 @@ const games = [
     description: "Strategy game for two players",
     link: "/tic-tac-toe",
     color: "#98FB98",
+    image: `/images/tictactoe.png`,
   },
   {
     id: 3,
@@ -148,20 +148,31 @@ const games = [
     description: "Fun number matching game",
     link: "/bingo",
     color: "#FF69B4",
+    image: `/images/bingo.png`,
   },
-  {
-    id: 4,
-    title: "Tetris",
-    description: "Addictive block-stacking puzzle",
-    link: "#",
-    color: "#4169E1",
-  },
+  // {
+  //   id: 4,
+  //   title: "Tetris",
+  //   description: "Addictive block-stacking puzzle",
+  //   link: "#",
+  //   color: "#4169E1",
+  // },
   {
     id: 5,
-    title: "Pac-Man",
+    title: "Typing Game",
+    description: "Typing game game",
+    link: "/TypingGame",
+    color: "purple",
+    image: `/images/typingtest.png`,
+  },
+
+  {
+    id: 6,
+    title: "Hang-Man",
     description: "Iconic maze chase game",
-    link: "/bingo",
+    link: "/HangmanGame",
     color: "#FFD700",
+    image: `/images/hangman.png`,
   },
   {
     id: 6,
@@ -209,8 +220,8 @@ const GamePortalHomePage = () => {
       const container = containerRef.current;
       if (container) {
         const scrollLeft = container.scrollLeft;
-        const scrollRight = container.scrollRight;  //------------------------------------
-        const cardWidth = container.offsetWidth / 1.6;
+        // const scrollRight = container.scrollRight;  //------------------------------------
+        const cardWidth = 300 + 30;
         const newFocusIndex = Math.round(scrollLeft / cardWidth);
         setFocusIndex(newFocusIndex);
       }
@@ -240,7 +251,7 @@ const GamePortalHomePage = () => {
         <GameCardsContainer>
           {games.map((game, index) => (
             <GameCard key={game.id} focus={index === focusIndex}>
-              <GameImage color={game.color} focus={index === focusIndex} />
+              <GameImage color={game.color} image={game.image} />
               <GameInfo>
                 <GameTitle>{game.title}</GameTitle>
                 <GameDescription>{game.description}</GameDescription>

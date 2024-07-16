@@ -79,11 +79,11 @@ const TicTacToe = () => {
     );
   };
 
-  const getLineType = (line) => {
-    if (line[0] % 3 === 0 && line[2] % 3 === 2) return "row";
-    if (line[2] - line[0] === 6) return "column";
-    return "diagonal";
-  };
+  // const getLineType = (line) => {
+  //   if (line[0] % 3 === 0 && line[2] % 3 === 2) return "row";
+  //   if (line[2] - line[0] === 6) return "column";
+  //   return "diagonal";
+  // };
 
   return (
     <Container>
@@ -121,8 +121,8 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  background-color: #f0f0f0;
+  min-height: 94vh;
+  background-color: #8FD8D4;
   position: relative;
 `;
 
@@ -173,6 +173,7 @@ const Board = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
+  // border: 1px solid #000;
   gap: 10px;
   width: 100%;
   height: 100%;
@@ -182,7 +183,7 @@ const Cell = styled.button`
   aspect-ratio: 1 / 1;
   font-size: 2.5rem;
   font-weight: bold;
-  border: 2px solid #ddd;
+  border: 1px solid #000;
   background-color: ${(props) => (props.isWinning ? "#2ecc71" : "white")};
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;

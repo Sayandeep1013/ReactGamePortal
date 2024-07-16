@@ -48,7 +48,7 @@ const BingoGame = () => {
     if (bingos >= 3) points = 3;
     if (bingos >= 4) points = 5;
     if (bingos >= 5) points = 10;
-  
+
     setScore(points);
     setGameOver(true);
     setShowModal(true);
@@ -129,9 +129,7 @@ const BingoGame = () => {
         <RulesContainer>
           <RulesTitle>Rules</RulesTitle>
           <RulesList>
-            <Rule>
-              You have 8 turns to create as many Bingos as possible.
-            </Rule>
+            <Rule>You have 8 turns to create as many Bingos as possible.</Rule>
             <Rule>Click on an empty cell to mark it.</Rule>
             <Rule>
               The computer will randomly mark another cell after your turn.
@@ -170,8 +168,8 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  background-color: #f0f0f0;
+  min-height: 94vh;
+  background-color: #C5F6C5;
   position: relative;
 `;
 
@@ -182,6 +180,7 @@ const GameContainer = styled.div`
   gap: 40px;
   width: 100%;
   max-width: 1200px;
+
   margin: 0 auto;
 `;
 
@@ -239,7 +238,7 @@ const Cell = styled.button`
   height: 80px;
   font-size: 2rem;
   font-weight: bold;
-  border: 2px solid #ddd;
+  border: 1px solid #000;
   background-color: ${(props) => (props.marked ? "#2ecc71" : "white")};
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;

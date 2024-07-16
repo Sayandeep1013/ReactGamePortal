@@ -21,7 +21,7 @@ const GameTitle = styled.h1`
   font-weight: bold;
   margin-bottom: 1rem;
   position: absolute;
-  left: 10px;
+  left: 30px;
   top: 0px;
   writing-mode: vertical-rl;
   text-orientation: upright;
@@ -32,23 +32,23 @@ const TitleAnd = styled.span`
   font-weight: normal;
 `;
 
-const moveToken = keyframes`
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(var(--moveX), var(--moveY)); }
-`;
+// const moveToken = keyframes`
+//   0% { transform: translate(0, 0); }
+//   100% { transform: translate(var(--moveX), var(--moveY)); }
+// `;
 
 const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  background-color: #ffffff;
+  height: 96vh;
+  background-color: pink;
   color: #000000;
 `;
 
 const BackButton = styled.button`
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: 48px;
+  left: 48px;
   padding: 10px;
   background-color: #000000;
   color: white;
@@ -70,14 +70,15 @@ const MainContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-grow: 1;
+  max-height: 96vh;
   position: relative;
 `;
 
 const BoardContainer = styled.div`
   display: flex;
   aspect-ratio: 1;
-  height: calc(100vh - 60px);
-  max-height: calc(100vh - 60px);
+  height: calc(98vh - 60px);
+  max-height: calc(98vh - 60px);
 `;
 
 const BoardTable = styled.table`
@@ -147,12 +148,12 @@ const Destination = styled.div`
 
 const SidebarContainer = styled.div`
   width: 350px;
-  background-color: #ffffff;
-  padding: 30px;
+  background-color: pink;
+  padding: 35px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: calc(100vh - 60px);
+  height: calc(90vh - 60px);
 `;
 
 const PlayerSelectorContainer = styled.div`
@@ -491,7 +492,7 @@ const SnakeAndLadderGame = () => {
         <GameWrapper>
           <GameTitle>
             SNAKES
-            <TitleAnd>and</TitleAnd>
+            <TitleAnd>ㅤ&ㅤ</TitleAnd>
             LADDERS
           </GameTitle>
           <PlayerStartArea>

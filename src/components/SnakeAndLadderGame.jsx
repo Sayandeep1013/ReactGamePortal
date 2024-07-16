@@ -600,7 +600,7 @@ const SnakeAndLadderGame = () => {
 
           <DiceContainer onClick={rollDice}>
             <DiceImage
-              src={`/dice-${gameState.diceValue || 1}.svg`}
+              src={`/dices/dice-${gameState.diceValue || 1}.svg`}
               alt={`Dice value: ${gameState.diceValue || 1}`}
             />
           </DiceContainer>

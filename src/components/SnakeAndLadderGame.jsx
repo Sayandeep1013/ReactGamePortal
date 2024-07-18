@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import MenuBar from "./MenuBar";
 import Confetti from "react-confetti";
+import { gsap } from "gsap";
 
 const moveAnimation = keyframes`
   0% { transform: scale(1); }
@@ -44,7 +45,6 @@ const AppContainer = styled.div`
 const BackButton = styled.button`
   position: absolute;
   top: 48px;
-
   left: 48px;
   padding: 10px;
   background-color: #000000;
@@ -305,8 +305,6 @@ const RulesButtonContainer = styled.div`
 const RulesButton = styled.button`
   padding: 10px 20px;
   font-size: 1rem;
-
-  // font-weight: bold;
   color: white;
   background-color: #000000;
   border: none;
@@ -405,6 +403,8 @@ const SnakeAndLadderGame = () => {
   const [currentRule, setCurrentRule] = useState(1);
 
   const playerColors = ["#e74c3c", "#3498db", "#f1c40f", "#2ecc71"];
+  const diceRef = useRef(null);
+  const rulesModalRef = useRef(null);
 
   const memoizedValue = useMemo(() => {
     const arr = Array.from({ length: 100 }, (_, i) => i + 1);
@@ -431,21 +431,26 @@ const SnakeAndLadderGame = () => {
   const rollDice = () => {
     if (!gameState.gameStarted) return;
 
-    let nextPlayer = (gameState.currentPlayer + 1) % gameState.players;
-
-    while (gameState.playerPositions[nextPlayer] === 100) {
-      nextPlayer = (nextPlayer + 1) % gameState.players;
-    }
-
     const newValue = Math.floor(Math.random() * 6) + 1;
-    let newPosition = gameState.playerPositions[gameState.currentPlayer];
+    let currentPlayer = gameState.currentPlayer;
+    let newPosition = gameState.playerPositions[currentPlayer];
 
-    if (!gameState.playerStarted[gameState.currentPlayer] && newValue === 1) {
+    // Animate dice roll
+    gsap.to(diceRef.current, {
+      rotation: 360,
+      duration: 0.5,
+      ease: "power2.inOut",
+      onComplete: () => {
+        gsap.set(diceRef.current, { rotation: 0 });
+      },
+    });
+
+    if (!gameState.playerStarted[currentPlayer] && newValue === 1) {
       newPosition = 1;
       const newPlayerStarted = [...gameState.playerStarted];
-      newPlayerStarted[gameState.currentPlayer] = true;
+      newPlayerStarted[currentPlayer] = true;
       updateGameState({ playerStarted: newPlayerStarted });
-    } else if (gameState.playerStarted[gameState.currentPlayer]) {
+    } else if (gameState.playerStarted[currentPlayer]) {
       newPosition += newValue;
     }
 
@@ -455,14 +460,19 @@ const SnakeAndLadderGame = () => {
       }
 
       const newPositions = [...gameState.playerPositions];
-      newPositions[gameState.currentPlayer] = newPosition;
+      newPositions[currentPlayer] = newPosition;
 
       let newWinners = [...gameState.winners];
-      if (
-        newPosition === 100 &&
-        !newWinners.includes(gameState.currentPlayer)
-      ) {
-        newWinners.push(gameState.currentPlayer);
+      if (newPosition === 100 && !newWinners.includes(currentPlayer)) {
+        newWinners.push(currentPlayer);
+      }
+
+      let nextPlayer = currentPlayer;
+      // If the player didn't roll a 1 or reach 100, move to the next player
+      if (newValue !== 1 && newPosition !== 100) {
+        do {
+          nextPlayer = (nextPlayer + 1) % gameState.players;
+        } while (gameState.playerPositions[nextPlayer] === 100);
       }
 
       updateGameState({
@@ -471,7 +481,7 @@ const SnakeAndLadderGame = () => {
         playerPositions: newPositions,
         hit: gameState.hit + 1,
         winners: newWinners,
-        movingPlayer: gameState.currentPlayer,
+        movingPlayer: currentPlayer,
       });
 
       setTimeout(() => {
@@ -484,6 +494,12 @@ const SnakeAndLadderGame = () => {
         }
       }, 500);
     } else {
+      // If the player overshoots 100, their position doesn't change
+      let nextPlayer = currentPlayer;
+      do {
+        nextPlayer = (nextPlayer + 1) % gameState.players;
+      } while (gameState.playerPositions[nextPlayer] === 100);
+
       updateGameState({
         diceValue: newValue,
         currentPlayer: nextPlayer,
@@ -549,7 +565,7 @@ const SnakeAndLadderGame = () => {
     if (currentRule < 4) {
       setCurrentRule(currentRule + 1);
     } else {
-      setShowRules(false);
+      handleSkipRules();
     }
   };
 
@@ -560,8 +576,28 @@ const SnakeAndLadderGame = () => {
   };
 
   const handleSkipRules = () => {
-    setShowRules(false);
+    gsap.to(rulesModalRef.current, {
+      y: "-100%",
+      duration: 0.5,
+      ease: "power2.inOut",
+      onComplete: () => setShowRules(false),
+    });
   };
+
+  const showRulesModal = () => {
+    setShowRules(true);
+    gsap.fromTo(
+      rulesModalRef.current,
+      { y: "-100%" },
+      { y: 0, duration: 0.5, ease: "power2.inOut" }
+    );
+  };
+
+  useEffect(() => {
+    if (showRules) {
+      showRulesModal();
+    }
+  }, [showRules]);
 
   return (
     <AppContainer>
@@ -594,19 +630,19 @@ const SnakeAndLadderGame = () => {
                     <TableCell
                       key={`cell-${cell}`}
                       className={`
-                      ${
-                        gameState.snakesAndLadders[cell] &&
-                        gameState.snakesAndLadders[cell] < cell
-                          ? "snake"
-                          : ""
-                      }
-                      ${
-                        gameState.snakesAndLadders[cell] &&
-                        gameState.snakesAndLadders[cell] > cell
-                          ? "ladder"
-                          : ""
-                      }
-                    `}
+                        ${
+                          gameState.snakesAndLadders[cell] &&
+                          gameState.snakesAndLadders[cell] < cell
+                            ? "snake"
+                            : ""
+                        }
+                        ${
+                          gameState.snakesAndLadders[cell] &&
+                          gameState.snakesAndLadders[cell] > cell
+                            ? "ladder"
+                            : ""
+                        }
+                      `}
                     >
                       {cell}
                       {gameState.playerPositions.map((pos, index) =>
@@ -615,10 +651,6 @@ const SnakeAndLadderGame = () => {
                             key={`player-${index}`}
                             style={{
                               backgroundColor: playerColors[index],
-                              "--moveX": `${((cell - 1) % 10) * 10}%`,
-                              "--moveY": `${
-                                -Math.floor((cell - 1) / 10) * 10
-                              }%`,
                             }}
                             top={(index % 2) * 40 + 10}
                             left={(Math.floor(index / 2) % 2) * 40 + 10}
@@ -661,7 +693,7 @@ const SnakeAndLadderGame = () => {
                 {num}
               </PlayerSelectorButton>
             ))}
-            <ShowRulesButton onClick={() => setShowRules(true)}>
+            <ShowRulesButton onClick={showRulesModal}>
               Show Rules
             </ShowRulesButton>
           </PlayerSelectorContainer>
@@ -684,6 +716,7 @@ const SnakeAndLadderGame = () => {
 
           <DiceContainer onClick={rollDice}>
             <DiceImage
+              ref={diceRef}
               src={`/dices/dice-${gameState.diceValue || 1}.svg`}
               alt={`Dice value: ${gameState.diceValue || 1}`}
             />
@@ -696,7 +729,7 @@ const SnakeAndLadderGame = () => {
       </MainContainer>
 
       {showRules && (
-        <RulesModal>
+        <RulesModal ref={rulesModalRef}>
           <RulesContent>
             <RulesImage
               src={`/snakeandladderrules/snlrule-${currentRule}.png`}

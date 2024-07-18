@@ -7,7 +7,6 @@ const AppContainer = styled.div`
   text-align: center;
   padding: 40px;
   font-family: Arial, sans-serif;
-  // max-width: 1200px;
   background-color: #f8f8ba;
   margin: 0 auto;
 `;
@@ -149,13 +148,6 @@ const games = [
     color: "#FF69B4",
     image: `/images/bingo.png`,
   },
-  // {
-  //   id: 4,
-  //   title: "Tetris",
-  //   description: "Addictive block-stacking puzzle",
-  //   link: "#",
-  //   color: "#4169E1",
-  // },
   {
     id: 5,
     title: "Typing Game",

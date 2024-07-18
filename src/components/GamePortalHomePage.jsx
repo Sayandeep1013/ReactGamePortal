@@ -8,8 +8,7 @@ const AppContainer = styled.div`
   padding: 40px;
   font-family: Arial, sans-serif;
   // max-width: 1200px;
-  // background-color: #f2f2f2;
-  background-color: #c5f6c5;
+  background-color: #f8f8ba;
   margin: 0 auto;
 `;
 

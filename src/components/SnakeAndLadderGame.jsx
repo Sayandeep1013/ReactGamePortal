@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styled, { keyframes } from "styled-components";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import MenuBar from "./MenuBar";
+import Confetti from "react-confetti";
 
 const moveAnimation = keyframes`
   0% { transform: scale(1); }
@@ -32,15 +33,10 @@ const TitleAnd = styled.span`
   font-weight: normal;
 `;
 
-// const moveToken = keyframes`
-//   0% { transform: translate(0, 0); }
-//   100% { transform: translate(var(--moveX), var(--moveY)); }
-// `;
-
 const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 96vh;
+  height: 94vh;
   background-color: pink;
   color: #000000;
 `;
@@ -48,6 +44,7 @@ const AppContainer = styled.div`
 const BackButton = styled.button`
   position: absolute;
   top: 48px;
+
   left: 48px;
   padding: 10px;
   background-color: #000000;
@@ -129,10 +126,8 @@ const PlayerToken = styled.div`
   top: ${(props) => props.top}%;
   left: ${(props) => props.left}%;
   transition: all 0.4s ease-in-out;
-  // animation: ${(props) => (props.isActive ? moveAnimation : "none")} 0.6s
-  //     ease-in-out infinite,
-  ${(props) =>
-    props.isMoving ? moveAnimation : "none"} 0.5s ease-in-out infinite;
+  animation: ${(props) => (props.isMoving ? moveAnimation : "none")} 0.5s
+    ease-in-out infinite;
 `;
 
 const Destination = styled.div`
@@ -255,12 +250,117 @@ const ModalOverlay = styled.div`
   z-index: 1000;
 `;
 
-// const ModalContent = styled.div`
-//   background-color: white;
-//   padding: 20px;
-//   border-radius: 10px;
-//   text-align: center;
-// `;
+const ModalContent = styled.div`
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+`;
+
+const RulesModal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const RulesContent = styled.div`
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 80%;
+  max-height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const RulesImage = styled.img`
+  max-width: 50vw;
+  max-height: 60vh;
+  border-radius: 10px;
+  border: 1px solid #000;
+  object-fit: contain;
+  margin-bottom: 20px;
+`;
+
+const RulesText = styled.p`
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+`;
+
+const RulesButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const RulesButton = styled.button`
+  padding: 10px 20px;
+  font-size: 1rem;
+
+  // font-weight: bold;
+  color: white;
+  background-color: #000000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid black;
+  }
+`;
+
+const StartGameButton = styled(RulesButton)`
+  background-color: #ff7aa0;
+
+  &:hover {
+    background-color: #fff;
+    color: #ff7aa0;
+    border: 1px solid #ff7aa0;
+  }
+`;
+
+const SkipButton = styled(RulesButton)`
+  background-color: #0e0e0e;
+
+  &:hover {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid black;
+  }
+`;
+
+const NextButton = styled(RulesButton)``;
+
+const PreviousButton = styled(RulesButton)`
+  margin-left: auto;
+  margin-right: 20px;
+`;
+
+const ShowRulesButton = styled(RulesButton)`
+  justified-content: center;
+  align-items: center;
+`;
+
+const ResetButton = styled(RulesButton)`
+  margin-top: 20px;
+`;
+
+const PlayerNameInput = styled.input``;
 
 const defaultSnakesAndLadders = {
   16: 6,
@@ -301,6 +401,8 @@ const SnakeAndLadderGame = () => {
   });
 
   const [showWinModal, setShowWinModal] = useState(false);
+  const [showRules, setShowRules] = useState(true);
+  const [currentRule, setCurrentRule] = useState(1);
 
   const playerColors = ["#e74c3c", "#3498db", "#f1c40f", "#2ecc71"];
 
@@ -311,6 +413,17 @@ const SnakeAndLadderGame = () => {
     return newArr;
   }, []);
 
+  useEffect(() => {
+    const savedGame = JSON.parse(localStorage.getItem("snakeAndLadderGame"));
+    if (savedGame) {
+      setGameState(savedGame);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("snakeAndLadderGame", JSON.stringify(gameState));
+  }, [gameState]);
+
   const updateGameState = (newState) => {
     setGameState((prevState) => ({ ...prevState, ...newState }));
   };
@@ -320,7 +433,6 @@ const SnakeAndLadderGame = () => {
 
     let nextPlayer = (gameState.currentPlayer + 1) % gameState.players;
 
-    // Skip players who have finished
     while (gameState.playerPositions[nextPlayer] === 100) {
       nextPlayer = (nextPlayer + 1) % gameState.players;
     }
@@ -433,53 +545,22 @@ const SnakeAndLadderGame = () => {
     updateGameState({ gameStarted: true });
   };
 
-  const ModalContent = styled.div`
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-  `;
-
-  const WinnerText = styled.h2`
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  `;
-
-  const RunnerUpText = styled.p`
-    font-size: 18px;
-    margin-bottom: 5px;
-  `;
-
-  const LoserText = styled.p`
-    font-size: 16px;
-  `;
-
-  const getWinnerText = () => {
-    const { winners, players } = gameState;
-    if (players === 2) {
-      return (
-        <>
-          <WinnerText>Player {winners[0] + 1} wins!</WinnerText>
-        </>
-      );
-    } else if (players === 3) {
-      return (
-        <>
-          <WinnerText>Winner: Player {winners[0] + 1}</WinnerText>
-          <RunnerUpText>Runner-up: Player {winners[1] + 1}</RunnerUpText>
-        </>
-      );
-    } else if (players === 4) {
-      return (
-        <>
-          <WinnerText>Winner: Player {winners[0] + 1}</WinnerText>
-          <RunnerUpText>1st Runner-up: Player {winners[1] + 1}</RunnerUpText>
-          <RunnerUpText>2nd Runner-up: Player {winners[2] + 1}</RunnerUpText>
-          <LoserText>Loser: Player {winners[3] + 1}</LoserText>
-        </>
-      );
+  const handleNextRule = () => {
+    if (currentRule < 4) {
+      setCurrentRule(currentRule + 1);
+    } else {
+      setShowRules(false);
     }
+  };
+
+  const handlePreviousRule = () => {
+    if (currentRule > 1) {
+      setCurrentRule(currentRule - 1);
+    }
+  };
+
+  const handleSkipRules = () => {
+    setShowRules(false);
   };
 
   return (
@@ -580,6 +661,9 @@ const SnakeAndLadderGame = () => {
                 {num}
               </PlayerSelectorButton>
             ))}
+            <ShowRulesButton onClick={() => setShowRules(true)}>
+              Show Rules
+            </ShowRulesButton>
           </PlayerSelectorContainer>
 
           {[...Array(gameState.players)].map((_, index) => (
@@ -611,11 +695,65 @@ const SnakeAndLadderGame = () => {
         </SidebarContainer>
       </MainContainer>
 
+      {showRules && (
+        <RulesModal>
+          <RulesContent>
+            <RulesImage
+              src={`/snakeandladderrules/snlrule-${currentRule}.png`}
+              alt={`Rule ${currentRule}`}
+            />
+            <RulesText>
+              {currentRule === 1 &&
+                "Select number of players at the top right."}
+              {currentRule === 2 &&
+                "Roll the dice to get started [ roll a one to unlock moving capabilities !"}
+              {currentRule === 3 &&
+                "If you land on a ladder [ green ] you climb up and if you land on a snake [ red] you slide down."}
+              {currentRule === 4 &&
+                " Take turns rolling the dice. the first player to reach 100 wins !"}
+            </RulesText>
+            <RulesButtonContainer>
+              <SkipButton onClick={handleSkipRules}>
+                Skip All <ArrowRight size={16} />
+              </SkipButton>
+              {currentRule > 1 && (
+                <PreviousButton onClick={handlePreviousRule}>
+                  <ArrowLeft size={16} /> Previous
+                </PreviousButton>
+              )}
+              {currentRule < 4 ? (
+                <NextButton onClick={handleNextRule}>
+                  Next Rule <ArrowRight size={16} />
+                </NextButton>
+              ) : (
+                <StartGameButton onClick={handleSkipRules}>
+                  Start Game <ArrowRight size={16} />
+                </StartGameButton>
+              )}
+            </RulesButtonContainer>
+          </RulesContent>
+        </RulesModal>
+      )}
+
       {showWinModal && (
         <ModalOverlay onClick={() => setShowWinModal(false)}>
           <ModalContent onClick={(e) => e.stopPropagation()}>
+            <Confetti
+              width={window.innerWidth}
+              height={window.innerHeight}
+              colors={[
+                "#FFC0CB",
+                "#FFB6C1",
+                "#FF69B4",
+                "#FF1493",
+                "#DB7093",
+                "#C71585",
+              ]}
+              numberOfPieces={200}
+              gravity={0.3}
+            />
             <h2>Game Over</h2>
-            <p>{getWinnerText()}</p>
+            <p>Player {gameState.winners[0] + 1} wins!</p>
             <Button
               onClick={() => {
                 setShowWinModal(false);

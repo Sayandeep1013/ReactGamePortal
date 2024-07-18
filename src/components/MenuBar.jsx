@@ -53,7 +53,7 @@ const MenuOverlay = styled.div`
   right: ${({ isOpen }) => (isOpen ? "0" : "-300px")};
   width: 300px;
   height: 100vh;
-  background-color: #F9E479;
+  background-color: #f9e479;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -125,6 +125,9 @@ const MenuBar = () => {
         </MenuItem>
         <MenuItem to="/HangmanGame" onClick={toggleMenu}>
           Hangman Game
+        </MenuItem>
+        <MenuItem to="/RockPaperScissorsGame" onClick={toggleMenu}>
+          Rock Paper Scissor
         </MenuItem>
       </MenuOverlay>
     </MenuContainer>

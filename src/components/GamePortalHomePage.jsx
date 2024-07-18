@@ -149,7 +149,7 @@ const games = [
     image: `/images/bingo.png`,
   },
   {
-    id: 5,
+    id: 4,
     title: "Typing Game",
     description: "Typing game game",
     link: "/TypingGame",
@@ -158,12 +158,20 @@ const games = [
   },
 
   {
-    id: 6,
+    id: 5,
     title: "Hang-Man",
     description: "Iconic maze chase game",
     link: "/HangmanGame",
     color: "#FFD700",
     image: `/images/hangman.png`,
+  },
+  {
+    id: 6,
+    title: "Rock-Paper-Scissors",
+    description: "Just plain old rock paper scissors game",
+    link: "/RockPaperScissorsGame",
+    color: "#FFD700",
+    image: `/images/rockpaperscissors.png`,
   },
   {
     id: 6,

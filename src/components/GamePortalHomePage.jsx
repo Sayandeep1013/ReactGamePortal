@@ -9,6 +9,7 @@ const AppContainer = styled.div`
   font-family: Arial, sans-serif;
   background-color: #f8f8ba;
   margin: 0 auto;
+  overflow-y: hidden;
 `;
 
 const Title = styled.h1`
@@ -28,8 +29,6 @@ const GameSection = styled.section`
   height: 550px;
   overflow-x: auto;
   overflow-y: hidden;
-  scroll-snap-type: x;
-  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   &::-webkit-scrollbar {
     display: none;
@@ -38,24 +37,20 @@ const GameSection = styled.section`
 
 const GameCardsContainer = styled.div`
   display: flex;
-  width: 2000px;
-  transform: translateX(0);
-  transition: transform 0.5s ease;
-  scroll-snap-align: center mandatory;
+  padding: 50px 0;
 `;
 
 const GameCard = styled.div`
-  flex: 0 0 33%;
+  flex: 0 0 600px;
   width: 300px;
   height: 450px;
   background-color: #f2f2f2;
   border-radius: 20px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  transition: all 0.4s ease-in;
-  transform: ${(props) => (props.focus ? "scale(1)" : "scale(0.9)")};
-  // opacity: ${(props) => (props.onFocus ? 1 : 0.5)};
-  margin: 15px 15px;
-  // scroll-snap-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  // transform: ${(props) => (props.isActive ? "scale(1)" : "scale(0.9)")};
+  // opacity: ${(props) => (props.isActive ? 1 : 0.7)};
+  margin: 0 15px;
 `;
 
 const GameImage = styled.div`
@@ -156,7 +151,6 @@ const games = [
     color: "purple",
     image: `/images/typingtest.png`,
   },
-
   {
     id: 5,
     title: "Hang-Man",
@@ -174,35 +168,37 @@ const games = [
     image: `/images/rockpaperscissors.png`,
   },
   {
-    id: 6,
-    title: "Chess",
+    id: 7,
+    title: "Connect Four",
     description: "Classic strategy board game",
-    link: "#",
-    color: "#8B4513",
+    link: "/ConnectFour",
+    color: "#20B2AA",
+    image: `/images/connectfour.png`,
   },
   {
-    id: 7,
+    id: 8,
     title: "Sudoku",
     description: "Number-placement puzzle",
     link: "#",
     color: "#20B2AA",
   },
   {
-    id: 8,
+    id: 9,
     title: "Minesweeper",
     description: "Logic puzzle game",
     link: "#",
     color: "#708090",
   },
+  
   {
-    id: 9,
+    id: 10,
     title: "Solitaire",
     description: "Single-player card game",
     link: "#",
     color: "#228B22",
   },
   {
-    id: 10,
+    id: 11,
     title: "Crossword",
     description: "Word puzzle game",
     link: "#",
@@ -211,18 +207,17 @@ const games = [
 ];
 
 const GamePortalHomePage = () => {
-  const [focusIndex, setFocusIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
       const container = containerRef.current;
       if (container) {
-        const scrollLeft = container.scrollLeft;
-        // const scrollRight = container.scrollRight;  //------------------------------------
-        const cardWidth = 300 + 30;
-        const newFocusIndex = Math.round(scrollLeft / cardWidth);
-        setFocusIndex(newFocusIndex);
+        const scrollPosition = container.scrollLeft;
+        const cardWidth = 330; // 300px width + 30px margin
+        const newActiveIndex = Math.round(scrollPosition / cardWidth);
+        setActiveIndex(newActiveIndex);
       }
     };
 
@@ -249,7 +244,7 @@ const GamePortalHomePage = () => {
       <GameSection ref={containerRef}>
         <GameCardsContainer>
           {games.map((game, index) => (
-            <GameCard key={game.id} focus={index === focusIndex}>
+            <GameCard key={game.id} isActive={index === activeIndex}>
               <GameImage color={game.color} image={game.image} />
               <GameInfo>
                 <GameTitle>{game.title}</GameTitle>

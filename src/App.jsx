@@ -8,6 +8,7 @@ import TypingGame from "./components/TypingGame";
 import RockPaperScissorsGame from "./components/RockPaperScissorsGame";
 import GamePortalHomePage from "./components/GamePortalHomePage";
 import HangmanGame from "./components/HangmanGame";
+import ConnectFour from "./components/ConnectFour";
 
 const AppContainer = styled.div`
   text-align: center;
@@ -26,9 +27,10 @@ const App = () => {
           <Route path="/TypingGame" element={<TypingGame />} />
           <Route path="/HangmanGame" element={<HangmanGame />} />
           <Route path="/RockPaperScissorsGame" element={<RockPaperScissorsGame />} />
+          <Route path="/ConnectFour" element={<ConnectFour />} />
           
 
-          // Add more routes for other games here
+          
         </Routes>
       </AppContainer>
     </Router>

@@ -79,11 +79,6 @@ const TicTacToe = () => {
     );
   };
 
-  // const getLineType = (line) => {
-  //   if (line[0] % 3 === 0 && line[2] % 3 === 2) return "row";
-  //   if (line[2] - line[0] === 6) return "column";
-  //   return "diagonal";
-  // };
 
   return (
     <Container>

@@ -177,9 +177,9 @@ const games = [
   },
   {
     id: 8,
-    title: "Sudoku",
+    title: "Effects",
     description: "Number-placement puzzle",
-    link: "#",
+    link: "/Effects",
     color: "#20B2AA",
   },
   {
@@ -189,7 +189,7 @@ const games = [
     link: "#",
     color: "#708090",
   },
-  
+
   {
     id: 10,
     title: "Solitaire",

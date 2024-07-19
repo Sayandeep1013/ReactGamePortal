@@ -9,6 +9,7 @@ import RockPaperScissorsGame from "./components/RockPaperScissorsGame";
 import GamePortalHomePage from "./components/GamePortalHomePage";
 import HangmanGame from "./components/HangmanGame";
 import ConnectFour from "./components/ConnectFour";
+import Effects from "./components/Effects";
 
 const AppContainer = styled.div`
   text-align: center;
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/HangmanGame" element={<HangmanGame />} />
           <Route path="/RockPaperScissorsGame" element={<RockPaperScissorsGame />} />
           <Route path="/ConnectFour" element={<ConnectFour />} />
+          <Route path="/Effects" element={<Effects />} />
           
 
           

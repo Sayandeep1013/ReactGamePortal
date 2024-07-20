@@ -181,6 +181,7 @@ const games = [
     description: "Number-placement puzzle",
     link: "/Effects",
     color: "#20B2AA",
+    image: `/images/effects.png`,
   },
   {
     id: 9,

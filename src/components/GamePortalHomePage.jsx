@@ -187,7 +187,7 @@ const games = [
     id: 9,
     title: "Minesweeper",
     description: "Logic puzzle game",
-    link: "#",
+    link: "/Parallax",
     color: "#708090",
   },
 

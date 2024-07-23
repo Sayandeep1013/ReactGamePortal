@@ -177,6 +177,13 @@ const games = [
   },
   {
     id: 8,
+    title: "Ludo Game",
+    description: "Multi-player Board game",
+    link: "/LudoGame",
+    color: "ligtblue",
+  },
+  {
+    id: 8,
     title: "Effects",
     description: "Number-placement puzzle",
     link: "/Effects",
@@ -191,13 +198,7 @@ const games = [
     color: "#708090",
   },
 
-  {
-    id: 10,
-    title: "Solitaire",
-    description: "Single-player card game",
-    link: "#",
-    color: "#228B22",
-  },
+
   {
     id: 11,
     title: "Crossword",

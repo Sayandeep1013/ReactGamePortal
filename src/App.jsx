@@ -1,8 +1,3 @@
-
-
-//LudoGame First Draft ----------------
-
-
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import styled from "styled-components";

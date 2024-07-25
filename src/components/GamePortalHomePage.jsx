@@ -192,10 +192,10 @@ const games = [
   },
   {
     id: 9,
-    title: "Minesweeper",
-    description: "Logic puzzle game",
-    link: "/Parallax",
-    color: "#708090",
+    title: "Mines",
+    description: "Rip Off betting game",
+    link: "/MinesGame",
+    color: "#0f0",
   },
 
 

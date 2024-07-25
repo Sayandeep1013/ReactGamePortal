@@ -12,6 +12,7 @@ import ConnectFour from "./components/ConnectFour";
 import ParallaxPage from "./components/ParallaxPage";
 import Effects from "./components/Effects";
 import LudoGame from "./components/LudoGame";
+import MinesGame from "./components/MinesGame";
 
 const AppContainer = styled.div`
   text-align: center;
@@ -37,6 +38,7 @@ const App = () => {
           <Route path="/Effects" element={<Effects />} />
           <Route path="/parallax" element={<ParallaxPage />} />
           <Route path="/LudoGame" element={<LudoGame />} />
+          <Route path="/MinesGame" element={<MinesGame />} />
         </Routes>
       </AppContainer>
     </Router>

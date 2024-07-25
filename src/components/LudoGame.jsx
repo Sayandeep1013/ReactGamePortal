@@ -1,6 +1,5 @@
 // Ludo FIrst Draft
 
-
 import React, { useState, useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -73,7 +72,7 @@ const BoardContainer = styled.div`
   display: flex;
   aspect-ratio: 1;
   height: calc(98vh - 60px);
-  max-height: calc(98vh - 60px);
+  max-height: calc(98vh - 80px);
 `;
 
 const LudoBoard = styled.div`
@@ -117,7 +116,7 @@ const PlayerToken = styled.div`
 
 const SidebarContainer = styled.div`
   width: 350px;
-  background-color: #f0e68c;
+  background-color: orange;
   padding: 35px;
   display: flex;
   flex-direction: column;

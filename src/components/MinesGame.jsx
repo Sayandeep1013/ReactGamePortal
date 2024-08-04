@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { gsap } from "gsap";
 import MenuBar from "./MenuBar";
+import Confetti from "react-confetti";
+import { BiFontSize } from "react-icons/bi";
 
 const MinesGame = () => {
   const navigate = useNavigate();
@@ -19,6 +21,7 @@ const MinesGame = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [currentMultiplier, setCurrentMultiplier] = useState(1);
   const [revealedCount, setRevealedCount] = useState(0);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const boardRef = useRef(null);
   const modalRef = useRef(null);
@@ -125,6 +128,7 @@ const MinesGame = () => {
     setGameOver(true);
     if (won) {
       setScore(Math.floor(betAmount * currentMultiplier));
+      setShowConfetti(true);
     } else {
       setScore(0);
     }
@@ -148,11 +152,16 @@ const MinesGame = () => {
     setRevealedCount(0);
     setCurrentMultiplier(1);
     setGameStarted(false);
+    setBetAmount(10000);
+    setMineCount(1);
+    setShowConfetti(false);
 
     gsap.to(boardRef.current.children, {
       rotationY: 0,
       duration: 0.5,
     });
+
+    localStorage.removeItem("minesGame");
   };
 
   const handleCashOut = () => {
@@ -290,6 +299,7 @@ const MinesGame = () => {
           )}
         </BoardContainer>
         <RightSection>
+          <Title>Cash Out Section </Title>
           {gameStarted && (
             <>
               <CashOutButton
@@ -337,16 +347,16 @@ const MinesGame = () => {
                   Next Rule <ArrowRight size={16} />
                 </NextButton>
               ) : (
-                <StartGameButton onClick={handleSkipRules}>
+                <StartGameButtonV2 onClick={handleSkipRules}>
                   Start Game <ArrowRight size={16} />
-                </StartGameButton>
+                </StartGameButtonV2>
               )}
             </RulesButtonContainer>
           </RulesContent>
         </RulesModal>
       )}
       {showModal && (
-        <ModalOverlay onClick={() => setShowModal(false)}>
+        <ModalOverlay onClick={resetGame}>
           <ModalContent ref={modalRef} onClick={(e) => e.stopPropagation()}>
             <ModalText>
               {score > 0 ? (
@@ -364,18 +374,19 @@ const MinesGame = () => {
           </ModalContent>
         </ModalOverlay>
       )}
+      {showConfetti && <Confetti />}
     </Container>
   );
 };
 
-// Styled components (updated)
+// Styled components (updated with new color scheme)
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 94vh;
-  background-color: #f0f0f0;
+  background-color: #90ee90;
   position: relative;
 `;
 
@@ -391,7 +402,7 @@ const GameContainer = styled.div`
 
 const LeftSection = styled.div`
   width: 250px;
-  background-color: #ffffff;
+  background-color: #ffb6c1;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -408,14 +419,14 @@ const RightSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #ffffff;
+  background-color: #add8e6;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
 const Title = styled.h1`
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1rem;
   text-align: center;
@@ -462,19 +473,42 @@ const StyledInput = styled.input`
 `;
 
 const StartGameButton = styled.button`
-  padding: 10px 20px;
+  color: #ffffff;
+  padding: 10px 18px;
   font-size: 1rem;
-  font-weight: bold;
-  color: white;
-  background-color: #2ecc71;
-  border: none;
+  background: #000000;
   border-radius: 5px;
+  min-width: 220px;
+  border: none;
+  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
+  transition: 0.4s background ease-in;
   margin-top: 20px;
 
   &:hover {
-    background-color: #27ae60;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    color: #000000;
+  }
+`;
+
+const StartGameButtonV2 = styled.button`
+  color: #ffffff;
+  padding: 10px 18px;
+  font-size: 1rem;
+  background: green;
+  border-radius: 5px;
+  min-width: 220px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.4s background ease-in;
+  margin-top: 20px;
+
+  &:hover {
+    background-color: #ffffff;
+    border: 1px solid green;
+    color: green;
   }
 `;
 
@@ -544,24 +578,27 @@ const CellBack = styled.div`
 `;
 
 const CashOutButton = styled.button`
-  padding: 10px 20px;
+  color: #ffffff;
+  padding: 10px 18px;
   font-size: 1rem;
-  font-weight: bold;
-  color: white;
-  background-color: #e74c3c;
-  border: none;
+  background: #000000;
   border-radius: 5px;
+  min-width: 220px;
+  border: none;
+  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
-  margin-bottom: 20px;
+  transition: 0.4s background ease-in;
+  margin-top: 20px;
 
   &:hover {
-    background-color: #c0392b;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    color: #000000;
   }
 
   &:disabled {
-    background-color: #95a5a6;
-    cursor: not-allowed;
+    // background-color: #95a5a6;
+    // cursor: not-allowed;
   }
 `;
 
@@ -617,18 +654,22 @@ const ModalText = styled.p`
 `;
 
 const PlayAgainButton = styled.button`
-  padding: 10px 20px;
+  color: #ffffff;
+  padding: 10px 18px;
   font-size: 1rem;
-  font-weight: bold;
-  color: white;
-  background-color: #f39c12;
-  border: none;
+  background: #000000;
   border-radius: 5px;
+  min-width: 220px;
+  border: none;
+  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
+  transition: 0.4s background ease-in;
+  margin-top: 20px;
 
   &:hover {
-    background-color: #e67e22;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    color: #000000;
   }
 `;
 
@@ -678,46 +719,55 @@ const RulesButtonContainer = styled.div`
 `;
 
 const RulesButton = styled.button`
-  padding: 10px 20px;
+  color: #ffffff;
+  padding: 10px 18px;
   font-size: 1rem;
-  font-weight: bold;
-  color: white;
-  border: none;
+  background: #000000;
   border-radius: 5px;
+  min-width: 220px;
+  border: none;
+  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
+  transition: 0.4s background ease-in;
+  margin-top: 20px;
+
+  &:hover {
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    color: #000000;
+  }
 `;
 
 const SkipButton = styled(RulesButton)`
-  background-color: #95a5a6;
+  background-color: #000;
 
   &:hover {
-    background-color: #7f8c8d;
+    background-color: #fff;
   }
 `;
 
 const NextButton = styled(RulesButton)`
-  background-color: #3498db;
+  background-color: #000;
 
   &:hover {
-    background-color: #2980b9;
+    background-color: #fff;
   }
 `;
 
 const PreviousButton = styled(RulesButton)`
-  background-color: #e74c3c;
+  background-color: #000;
 
   &:hover {
-    background-color: #c0392b;
+    background-color: #fff;
   }
 `;
 
 const ShowRulesButton = styled(RulesButton)`
   margin-top: 20px;
-  background-color: #9b59b6;
+  background-color: #000;
 
   &:hover {
-    background-color: #8e44ad;
+    background-color: #fff;
   }
 `;
 
@@ -726,7 +776,7 @@ const WinIcon = styled.div`
   justify-content: center;
   align-items: center;
   margin-bottom: 1rem;
-  color: #f1c40f;
+  color: #000;
 `;
 
 export default MinesGame;

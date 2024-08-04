@@ -181,7 +181,16 @@ const games = [
     description: "Multi-player Board game",
     link: "/LudoGame",
     color: "ligtblue",
+    image: `/images/ludo.png`,
   },
+  {
+    id: 9,
+    title: "Mines",
+    description: "Rip Off betting game",
+    link: "/MinesGame",
+    image: `/images/minegame.png`,
+  },
+
   {
     id: 8,
     title: "Effects",
@@ -189,13 +198,6 @@ const games = [
     link: "/Effects",
     color: "#20B2AA",
     image: `/images/effects.png`,
-  },
-  {
-    id: 9,
-    title: "Mines",
-    description: "Rip Off betting game",
-    link: "/MinesGame",
-    color: "#0f0",
   },
 
 

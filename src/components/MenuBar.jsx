@@ -290,7 +290,9 @@ const MenuBar = () => {
           { to: "/HangmanGame", text: "Hangman Game" },
           { to: "/RockPaperScissorsGame", text: "Rock Paper Scissor" },
           { to: "/ConnectFour", text: "Connect Four" },
+          { to: "/MinesGame", text: "Mines Game" },
           { to: "/Effects", text: "Effects Exp" },
+          
         ].map((item, index) => (
           <MenuItem
             key={item.to}

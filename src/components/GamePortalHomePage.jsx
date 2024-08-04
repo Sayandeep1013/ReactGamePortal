@@ -190,9 +190,16 @@ const games = [
     link: "/MinesGame",
     image: `/images/minegame.png`,
   },
-
   {
-    id: 8,
+    id: 10,
+    title: "Sudoku",
+    description: "Number puzzle game",
+    link: "/SudokuGame",
+    color: "#CD853F",
+    image: `/images/sudoku.png`,
+  },
+  {
+    id: 11,
     title: "Effects",
     description: "Number-placement puzzle",
     link: "/Effects",
@@ -201,13 +208,6 @@ const games = [
   },
 
 
-  {
-    id: 11,
-    title: "Crossword",
-    description: "Word puzzle game",
-    link: "#",
-    color: "#CD853F",
-  },
 ];
 
 const GamePortalHomePage = () => {

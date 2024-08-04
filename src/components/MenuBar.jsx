@@ -136,7 +136,6 @@
 
 // export default MenuBar;
 
-
 // Code implemented without Gsap ↑
 // -----------------------------------------------------------------------------------
 //Code implemented without Gsap ↓
@@ -192,7 +191,7 @@ const MenuOverlay = styled.div`
   right: -300px;
   width: 300px;
   height: 100vh;
-  background-color: rgba(255, 220, 10 , 0.4);
+  background-color: rgba(255, 220, 10, 0.4);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -291,8 +290,8 @@ const MenuBar = () => {
           { to: "/RockPaperScissorsGame", text: "Rock Paper Scissor" },
           { to: "/ConnectFour", text: "Connect Four" },
           { to: "/MinesGame", text: "Mines Game" },
+          { to: "/SudokuGame", text: "Sudoku Game" },
           { to: "/Effects", text: "Effects Exp" },
-          
         ].map((item, index) => (
           <MenuItem
             key={item.to}

@@ -286,7 +286,7 @@ const MinesGame = () => {
                     (minePositions.includes(index) ? (
                       <img src="/MinesGame/mine.png" alt="Mine" />
                     ) : (
-                      <img src="/MinesGame/coin.png" alt="Coin" />
+                      <img src="/MinesGame/coin.gif" alt="Coin" />
                     ))}
                 </CellBack>
               </Cell>
@@ -374,7 +374,16 @@ const MinesGame = () => {
           </ModalContent>
         </ModalOverlay>
       )}
-      {showConfetti && <Confetti />}
+      {showConfetti && (
+        <ConfettiWrapper>
+          <Confetti
+            width={window.innerWidth}
+            height={window.innerHeight}
+            numberOfPieces={200}
+            gravity={0.3}
+          />
+        </ConfettiWrapper>
+      )}
     </Container>
   );
 };
@@ -468,7 +477,7 @@ const StyledInput = styled.input`
 
   &:disabled {
     background-color: #f0f0f0;
-    cursor: not-allowed;
+    pointer-events: none;
   }
 `;
 
@@ -777,6 +786,16 @@ const WinIcon = styled.div`
   align-items: center;
   margin-bottom: 1rem;
   color: #000;
+`;
+
+const ConfettiWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
 `;
 
 export default MinesGame;

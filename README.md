@@ -1,8 +1,37 @@
-# React + Vite
+# React Game Portal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A collage of small browser games in one React + Vite app — pick a card on the home page and play. Ten games, one shared shell (routing, menu, GSAP-driven page transitions).
 
-Currently, two official plugins are available:
+**Live:** [rein-gameportal.netlify.app](https://rein-gameportal.netlify.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Games
+
+Snake & Ladder · Tic Tac Toe · Bingo · Typing Test · Hangman · Rock Paper Scissors · Connect Four · Mines · Sudoku · Ludo
+
+## Screenshots
+
+| Home | Mines |
+|---|---|
+| ![Game Portal home, with live preview cards](screenshots/readme/01-home.png) | ![Mines — bet amount, mine count, cash out](screenshots/readme/02-mines.png) |
+
+| Sudoku | Connect Four |
+|---|---|
+| ![Sudoku, medium difficulty with candidate mode](screenshots/readme/03-sudoku.png) | ![Connect Four mid-game](screenshots/readme/04-connectfour.png) |
+
+| Hangman |
+|---|
+| ![Hangman with a hint](screenshots/readme/05-hangman.png) |
+
+## Stack
+
+- **Framework:** React 18, Vite, React Router
+- **Animation:** GSAP, React Spring, react-confetti
+- **UI:** styled-components, Swiper, lucide-react / react-icons
+- **Deployment:** Netlify
+
+## Run locally
+
+```bash
+npm install
+npm run dev
+```
